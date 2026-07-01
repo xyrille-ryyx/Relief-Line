@@ -1,0 +1,900 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Provincial Overview – ReliefLine</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/reliefline.css') }}">
+</head>
+<body class="page-dashboard">
+
+<!-- ── SIDEBAR ── -->
+<aside class="sidebar">
+    <div class="sidebar-brand">
+        <div class="brand-info">
+            <div class="brand-icon">🗂️</div>
+            <div class="brand-text">
+                <strong>ReliefLine</strong>
+                <span>Pangasinan · PSWDO</span>
+            </div>
+        </div>
+        <button class="brand-close">✕</button>
+    </div>
+
+    <nav class="sidebar-nav">
+        <div class="nav-section">Overview</div>
+        <a href="#" class="nav-item">
+            <span class="icon">📊</span> Dashboard
+        </a>
+        <a href="#" class="nav-item active">
+            <span class="icon">🌐</span> Provincial Overview
+        </a>
+        <a href="/prediction" class="nav-item">
+            <span class="icon">📈</span> Demand Forecast
+        </a>
+        <a href="#" class="nav-item">
+            <span class="icon">🗺️</span> Geospatial Map
+        </a>
+
+        <div class="nav-section">Supply Chain</div>
+        <a href="#" class="nav-item">
+            <span class="icon">🏭</span> Warehouse Inventory
+        </a>
+        <a href="#" class="nav-item">
+            <span class="icon">📦</span> Pre-positioning
+        </a>
+        <a href="#" class="nav-item">
+            <span class="icon">📋</span> Allocation Monitoring
+        </a>
+
+        <div class="nav-section">Tracking</div>
+        <a href="#" class="nav-item">
+            <span class="icon">📤</span> Issuance Monitoring
+        </a>
+        <a href="#" class="nav-item">
+            <span class="icon">✅</span> Validation Monitoring
+        </a>
+        <a href="#" class="nav-item">
+            <span class="icon">🎁</span> Donations & Supplies
+        </a>
+
+        <div class="nav-section">Reports</div>
+        <a href="#" class="nav-item">
+            <span class="icon">📄</span> Reports
+        </a>
+    </nav>
+
+    <div class="sidebar-bottom">
+        <a href="#" class="nav-item">
+            <span class="icon">🔔</span> Notifications
+            <span class="nav-badge">2</span>
+        </a>
+        <a href="#" class="nav-item">
+            <span class="icon">👤</span> Profile
+        </a>
+        <a href="/logout" class="nav-item">
+            <span class="icon">🚪</span> Log Out
+        </a>
+    </div>
+</aside>
+
+<!-- ── MAIN ── -->
+<div class="main">
+
+    <!-- Topbar -->
+    <div class="topbar">
+        <div class="topbar-left">
+            <h1>Provincial Overview</h1>
+            <p>Province of Pangasinan · Typhoon Preparedness — June 2026</p>
+        </div>
+        <div class="topbar-right">
+            <div class="search-box">🔍 Quick search...</div>
+            <button class="notif-btn">
+                🔔
+                <span class="notif-badge">2</span>
+            </button>
+            <div class="user-chip">
+                <div class="user-avatar">{{ session.name[0] if session.name else 'M' }}</div>
+                <div class="user-info">
+                    <strong>{{ session.name if session.name else 'Maria Santos' }}</strong>
+                    <span>PSWDO</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Content -->
+    <div class="content">
+
+        <!-- Filter card -->
+        <div class="filter-card">
+            <h2>Provincial Overview</h2>
+            <p>Province of Pangasinan — Monitoring of target LGU demand, stock sufficiency, allocation, issuance, and validation status.</p>
+            <div class="filters">
+                <div class="filter-group">
+                    <label>Planning Period</label>
+                    <input type="text" placeholder="e.g. June 2026">
+                </div>
+                <div class="filter-group">
+                    <label>Disaster Event</label>
+                    <input type="text" placeholder="e.g. Typhoon Carina">
+                </div>
+                <div class="filter-group">
+                    <label>City / Municipality</label>
+                    <select>
+                        <option value="">All</option>
+                        <option>Urdaneta City</option>
+                        <option>Santa Barbara</option>
+                        <option>Calasiao</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label>Status</label>
+                    <select>
+                        <option value="">All</option>
+                        <option>Pending</option>
+                        <option>Approved</option>
+                        <option>Released</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label>Date Range</label>
+                    <input type="date">
+                </div>
+            </div>
+        </div>
+
+        <!-- LGU Cards -->
+        <div class="lgu-grid">
+
+            <!-- Urdaneta City -->
+            <div class="lgu-card high-demand">
+                <div class="lgu-card-header">
+                    <div>
+                        <h3>Urdaneta City</h3>
+                        <p>Province of Pangasinan</p>
+                    </div>
+                    <span class="status-badge badge-warning">High Demand</span>
+                </div>
+                <div class="lgu-stats">
+                    <div>
+                        <div class="lgu-stat-label">Projected Demand</div>
+                        <div class="lgu-stat-value">5,200</div>
+                        <div class="lgu-stat-unit">food packs</div>
+                    </div>
+                    <div>
+                        <div class="lgu-stat-label">Available Stock</div>
+                        <div class="lgu-stat-value">4,100</div>
+                        <div class="lgu-stat-unit">food packs</div>
+                    </div>
+                </div>
+                <div class="shortage-box">
+                    <span>Shortage</span>
+                    <span class="shortage-val">-1,100</span>
+                </div>
+                <div class="progress-section">
+                    <div class="progress-row">
+                        <span class="progress-label">Stock Sufficiency</span>
+                        <span class="progress-pct">79%</span>
+                    </div>
+                    <div class="progress-bar-wrap"><div class="progress-bar bar-orange" style="width:79%"></div></div>
+                    <div class="progress-row">
+                        <span class="progress-label">Issuance Progress</span>
+                        <span class="progress-pct">73%</span>
+                    </div>
+                    <div class="progress-bar-wrap"><div class="progress-bar bar-orange" style="width:73%"></div></div>
+                    <div class="progress-row">
+                        <span class="progress-label">Validation Progress</span>
+                        <span class="progress-pct">52%</span>
+                    </div>
+                    <div class="progress-bar-wrap"><div class="progress-bar bar-orange" style="width:52%"></div></div>
+                </div>
+                <div class="lgu-card-footer">
+                    <div>
+                        <span class="allocation-label">Allocation: </span>
+                        <span class="status-badge badge-blue">Partially Issued</span>
+                    </div>
+                    <a href="#" class="btn-view" onclick="openDrawer('urdaneta'); return false;">👁 View Details</a>
+                </div>
+            </div>
+
+            <!-- Santa Barbara -->
+            <div class="lgu-card sufficient">
+                <div class="lgu-card-header">
+                    <div>
+                        <h3>Santa Barbara</h3>
+                        <p>Province of Pangasinan</p>
+                    </div>
+                    <span class="status-badge badge-success">Sufficient Stock</span>
+                </div>
+                <div class="lgu-stats">
+                    <div>
+                        <div class="lgu-stat-label">Projected Demand</div>
+                        <div class="lgu-stat-value">3,400</div>
+                        <div class="lgu-stat-unit">food packs</div>
+                    </div>
+                    <div>
+                        <div class="lgu-stat-label">Available Stock</div>
+                        <div class="lgu-stat-value">3,900</div>
+                        <div class="lgu-stat-unit">food packs</div>
+                    </div>
+                </div>
+                <div class="surplus-box">
+                    <span>Surplus</span>
+                    <span class="surplus-val">+500</span>
+                </div>
+                <div class="progress-section">
+                    <div class="progress-row">
+                        <span class="progress-label">Stock Sufficiency</span>
+                        <span class="progress-pct">115%</span>
+                    </div>
+                    <div class="progress-bar-wrap"><div class="progress-bar bar-green" style="width:100%"></div></div>
+                    <div class="progress-row">
+                        <span class="progress-label">Issuance Progress</span>
+                        <span class="progress-pct">100%</span>
+                    </div>
+                    <div class="progress-bar-wrap"><div class="progress-bar bar-green" style="width:100%"></div></div>
+                    <div class="progress-row">
+                        <span class="progress-label">Validation Progress</span>
+                        <span class="progress-pct">64%</span>
+                    </div>
+                    <div class="progress-bar-wrap"><div class="progress-bar bar-green" style="width:64%"></div></div>
+                </div>
+                <div class="lgu-card-footer">
+                    <div>
+                        <span class="allocation-label">Allocation: </span>
+                        <span class="status-badge badge-success">Fully Issued</span>
+                    </div>
+                    <a href="#" class="btn-view" onclick="openDrawer('santabarbara'); return false;">👁 View Details</a>
+                </div>
+            </div>
+
+            <!-- Calasiao -->
+            <div class="lgu-card critical">
+                <div class="lgu-card-header">
+                    <div>
+                        <h3>Calasiao</h3>
+                        <p>Province of Pangasinan</p>
+                    </div>
+                    <span class="status-badge badge-danger">Critical Shortage</span>
+                </div>
+                <div class="lgu-stats">
+                    <div>
+                        <div class="lgu-stat-label">Projected Demand</div>
+                        <div class="lgu-stat-value">3,850</div>
+                        <div class="lgu-stat-unit">food packs</div>
+                    </div>
+                    <div>
+                        <div class="lgu-stat-label">Available Stock</div>
+                        <div class="lgu-stat-value">1,800</div>
+                        <div class="lgu-stat-unit">food packs</div>
+                    </div>
+                </div>
+                <div class="shortage-box">
+                    <span>Shortage</span>
+                    <span class="shortage-val">-2,050</span>
+                </div>
+                <div class="progress-section">
+                    <div class="progress-row">
+                        <span class="progress-label">Stock Sufficiency</span>
+                        <span class="progress-pct">47%</span>
+                    </div>
+                    <div class="progress-bar-wrap"><div class="progress-bar bar-red" style="width:47%"></div></div>
+                    <div class="progress-row">
+                        <span class="progress-label">Issuance Progress</span>
+                        <span class="progress-pct">31%</span>
+                    </div>
+                    <div class="progress-bar-wrap"><div class="progress-bar bar-red" style="width:31%"></div></div>
+                    <div class="progress-row">
+                        <span class="progress-label">Validation Progress</span>
+                        <span class="progress-pct">28%</span>
+                    </div>
+                    <div class="progress-bar-wrap"><div class="progress-bar bar-red" style="width:28%"></div></div>
+                </div>
+                <div class="lgu-card-footer">
+                    <div>
+                        <span class="allocation-label">Allocation: </span>
+                        <span class="status-badge badge-yellow">Pending</span>
+                    </div>
+                    <a href="#" class="btn-view" onclick="openDrawer('calasiao'); return false;">👁 View Details</a>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Comparison Table -->
+        <div class="table-card">
+            <div class="table-header">
+                <div>
+                    <h2>City / Municipality Comparison Table</h2>
+                    <p>Detailed comparison of target LGUs — projected demand, stock, allocation, issuance, and validation</p>
+                </div>
+                <button class="btn-export">⬇ Export</button>
+            </div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Area</th>
+                        <th>Projected Demand</th>
+                        <th>Available Stock</th>
+                        <th>Shortage / Surplus</th>
+                        <th>Stock Suff. %</th>
+                        <th>Allocation Status</th>
+                        <th>Issuance %</th>
+                        <th>Validation %</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><div class="area-dot"><span class="dot dot-orange"></span>Urdaneta City</div></td>
+                        <td>5,200</td>
+                        <td>4,100</td>
+                        <td><span class="shortage-text">-1,100</span></td>
+                        <td>
+                            <div class="mini-bar-wrap">
+                                <div class="mini-bar-bg"><div class="mini-bar bar-orange" style="width:79%"></div></div>
+                                <span class="pct-text">79%</span>
+                            </div>
+                        </td>
+                        <td><span class="status-badge badge-blue">Partially Issued</span></td>
+                        <td>
+                            <div class="mini-bar-wrap">
+                                <div class="mini-bar-bg"><div class="mini-bar bar-blue" style="width:73%"></div></div>
+                                <span class="pct-text">73%</span>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="mini-bar-wrap">
+                                <div class="mini-bar-bg"><div class="mini-bar bar-green" style="width:52%"></div></div>
+                                <span class="pct-text">52%</span>
+                            </div>
+                        </td>
+                        <td><a href="#" class="link-view" onclick="openDrawer('urdaneta'); return false;">👁 View Details</a></td>
+                    </tr>
+                    <tr>
+                        <td><div class="area-dot"><span class="dot dot-green"></span>Santa Barbara</div></td>
+                        <td>3,400</td>
+                        <td>3,900</td>
+                        <td><span class="surplus-text">+500</span></td>
+                        <td>
+                            <div class="mini-bar-wrap">
+                                <div class="mini-bar-bg"><div class="mini-bar bar-green" style="width:100%"></div></div>
+                                <span class="pct-text">115%</span>
+                            </div>
+                        </td>
+                        <td><span class="status-badge badge-success">Fully Issued</span></td>
+                        <td>
+                            <div class="mini-bar-wrap">
+                                <div class="mini-bar-bg"><div class="mini-bar bar-blue" style="width:100%"></div></div>
+                                <span class="pct-text">100%</span>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="mini-bar-wrap">
+                                <div class="mini-bar-bg"><div class="mini-bar bar-green" style="width:64%"></div></div>
+                                <span class="pct-text">64%</span>
+                            </div>
+                        </td>
+                        <td><a href="#" class="link-view" onclick="openDrawer('santabarbara'); return false;">👁 View Details</a></td>
+                    </tr>
+                    <tr>
+                        <td><div class="area-dot"><span class="dot dot-red"></span>Calasiao</div></td>
+                        <td>3,850</td>
+                        <td>1,800</td>
+                        <td><span class="shortage-text">-2,050</span></td>
+                        <td>
+                            <div class="mini-bar-wrap">
+                                <div class="mini-bar-bg"><div class="mini-bar bar-red" style="width:47%"></div></div>
+                                <span class="pct-text">47%</span>
+                            </div>
+                        </td>
+                        <td><span class="status-badge badge-yellow">Pending</span></td>
+                        <td>
+                            <div class="mini-bar-wrap">
+                                <div class="mini-bar-bg"><div class="mini-bar bar-red" style="width:31%"></div></div>
+                                <span class="pct-text">31%</span>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="mini-bar-wrap">
+                                <div class="mini-bar-bg"><div class="mini-bar bar-red" style="width:28%"></div></div>
+                                <span class="pct-text">28%</span>
+                            </div>
+                        </td>
+                        <td><a href="#" class="link-view" onclick="openDrawer('calasiao'); return false;">👁 View Details</a></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+</div>
+
+<!-- ── DRAWER OVERLAY ── -->
+<div id="drawer-overlay" onclick="closeDrawer()" style="position:fixed; inset:0; background:rgba(0,0,0,0.3); z-index:200; display:none;"></div>
+
+<!-- ── DRAWER PANEL ── -->
+<div id="drawer" style="position:fixed; top:0; right:0; width:520px; height:100vh; background:white; z-index:201; overflow-y:auto; box-shadow:-4px 0 24px rgba(0,0,0,0.12); display:none;">
+
+    <!-- Drawer Header -->
+    <div style="padding:24px 24px 0; border-bottom:1px solid #e2e8f0; position:sticky; top:0; background:white; z-index:10;">
+        <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:6px;">
+            <div>
+                <div style="display:flex; align-items:center; gap:10px;">
+                    <h2 id="drawer-title" style="font-size:22px; font-weight:800;">Urdaneta City</h2>
+                    <span id="drawer-badge" class="status-badge badge-warning">High Demand</span>
+                </div>
+                <p style="font-size:12px; color:#64748b; margin-top:4px;">Province of Pangasinan · Typhoon Preparedness — June 2026</p>
+            </div>
+            <button onclick="closeDrawer()" style="background:none; border:none; font-size:20px; cursor:pointer; color:#64748b; padding:4px;">✕</button>
+        </div>
+
+        <!-- Tabs -->
+        <div id="drawer-tabs" style="display:flex; gap:0; margin-top:16px; position:relative;">
+            <button class="drawer-tab active" onclick="switchTab('overview', this)">Overview</button>
+            <button class="drawer-tab" onclick="switchTab('barangay', this)">Barangay Demand</button>
+            <button class="drawer-tab" onclick="switchTab('warehouse', this)">Warehouse Stock</button>
+            <button class="drawer-tab" onclick="switchTab('allocations', this)">Allocations</button>
+            <div id="tab-underline" aria-hidden="true"></div>
+        </div>
+    </div>
+
+    <!-- Tab: Overview -->
+    <div id="tab-overview" class="drawer-tab-content visible" style="padding:24px; display:block;">
+
+        <!-- 4 stat boxes -->
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:20px;">
+            <div style="background:#eff6ff; border:1px solid #bfdbfe; border-radius:10px; padding:16px;">
+                <div style="font-size:10px; font-weight:600; color:#3b82f6; letter-spacing:0.08em; text-transform:uppercase; margin-bottom:6px;">Projected Demand</div>
+                <div id="drawer-demand" style="font-size:28px; font-weight:800; color:#1e293b;">5,200</div>
+                <div style="font-size:12px; color:#64748b;">food packs</div>
+            </div>
+            <div style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:10px; padding:16px;">
+                <div style="font-size:10px; font-weight:600; color:#64748b; letter-spacing:0.08em; text-transform:uppercase; margin-bottom:6px;">Available Stock</div>
+                <div id="drawer-stock" style="font-size:28px; font-weight:800; color:#1e293b;">4,100</div>
+                <div style="font-size:12px; color:#64748b;">food packs</div>
+            </div>
+            <div style="background:#fef2f2; border:1px solid #fca5a5; border-radius:10px; padding:16px;">
+                <div id="drawer-surplus-label" style="font-size:10px; font-weight:600; color:#ef4444; letter-spacing:0.08em; text-transform:uppercase; margin-bottom:6px;">Shortage</div>
+                <div id="drawer-surplus-val" style="font-size:28px; font-weight:800; color:#dc2626;">-1,100</div>
+                <div style="font-size:12px; color:#64748b;">food packs</div>
+            </div>
+            <div style="background:#fefce8; border:1px solid #fde68a; border-radius:10px; padding:16px;">
+                <div style="font-size:10px; font-weight:600; color:#b45309; letter-spacing:0.08em; text-transform:uppercase; margin-bottom:6px;">Stock Sufficiency</div>
+                <div id="drawer-suff" style="font-size:28px; font-weight:800; color:#b45309;">79%</div>
+                <div id="drawer-suff-label" style="font-size:12px; color:#64748b;">Low</div>
+            </div>
+        </div>
+
+        <!-- Progress Summary -->
+        <div style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:10px; padding:18px; margin-bottom:16px;">
+            <div style="font-size:14px; font-weight:700; margin-bottom:16px;">Progress Summary</div>
+
+            <div style="margin-bottom:14px;">
+                <div style="display:flex; justify-content:space-between; margin-bottom:4px;">
+                    <span style="font-size:13px; font-weight:600;">Stock Sufficiency</span>
+                    <span style="font-size:12px; color:#64748b;">Low — monitor closely</span>
+                </div>
+                <div style="height:7px; background:#e2e8f0; border-radius:4px; margin-bottom:4px;">
+                    <div id="bar-suff" style="height:100%; border-radius:4px; background:#f59e0b; width:79%;"></div>
+                </div>
+                <div style="text-align:right; font-size:12px; font-weight:600;" id="pct-suff">79%</div>
+            </div>
+
+            <div style="margin-bottom:14px;">
+                <div style="display:flex; justify-content:space-between; margin-bottom:4px;">
+                    <span style="font-size:13px; font-weight:600;">Issuance Progress</span>
+                    <span style="font-size:12px; color:#64748b;">73% of approved allocations issued</span>
+                </div>
+                <div style="height:7px; background:#e2e8f0; border-radius:4px; margin-bottom:4px;">
+                    <div id="bar-issuance" style="height:100%; border-radius:4px; background:#f59e0b; width:73%;"></div>
+                </div>
+                <div style="text-align:right; font-size:12px; font-weight:600;" id="pct-issuance">73%</div>
+            </div>
+
+            <div>
+                <div style="display:flex; justify-content:space-between; margin-bottom:4px;">
+                    <span style="font-size:13px; font-weight:600;">Validation Progress</span>
+                    <span style="font-size:12px; color:#64748b;">52% of barangays have submitted validation</span>
+                </div>
+                <div style="height:7px; background:#e2e8f0; border-radius:4px; margin-bottom:4px;">
+                    <div id="bar-validation" style="height:100%; border-radius:4px; background:#f59e0b; width:52%;"></div>
+                </div>
+                <div style="text-align:right; font-size:12px; font-weight:600;" id="pct-validation">52%</div>
+            </div>
+        </div>
+
+        <!-- Allocation Status -->
+        <div style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:10px; padding:18px; margin-bottom:20px;">
+            <div style="font-size:14px; font-weight:700; margin-bottom:14px;">Allocation Status</div>
+            <div style="display:flex; justify-content:space-between; align-items:center; padding:10px 0; border-bottom:1px solid #e2e8f0;">
+                <span style="font-size:13px; color:#64748b;">Current Allocation Status</span>
+                <span class="status-badge badge-blue">Partially Issued</span>
+            </div>
+            <div style="display:flex; justify-content:space-between; align-items:center; padding:10px 0; border-bottom:1px solid #e2e8f0;">
+                <span style="font-size:13px; color:#64748b;">Barangays Covered</span>
+                <span style="font-size:13px; font-weight:700;">5 barangays</span>
+            </div>
+            <div style="display:flex; justify-content:space-between; align-items:center; padding:10px 0;">
+                <span style="font-size:13px; color:#64748b;">Total Allocation Records</span>
+                <span style="font-size:13px; font-weight:700;">2 records</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Tab: Barangay Demand -->
+    <div id="tab-barangay" class="drawer-tab-content" style="padding:24px; display:none;">
+        <div style="background:#fff; border:1px solid #e6eef8; border-radius:10px; padding:18px;">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+                <div>
+                    <div style="font-size:14px; font-weight:700;">Barangay Demand Summary</div>
+                    <div style="font-size:12px; color:#64748b;">Predicted food-pack requirements per barangay</div>
+                </div>
+            </div>
+
+            <table style="width:100%; border-collapse:collapse;">
+                <thead>
+                    <tr style="text-align:left; color:#64748b; font-size:12px;">
+                        <th style="padding:10px 12px;">BARANGAY</th>
+                        <th style="padding:10px 12px;">PREDICTED DEMAND</th>
+                        <th style="padding:10px 12px;">RISK LEVEL</th>
+                        <th style="padding:10px 12px;">FINAL ALLOC.</th>
+                        <th style="padding:10px 12px;">STATUS</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr style="border-top:1px solid #eef2f6;">
+                        <td style="padding:12px;">Brgy. San Vicente</td>
+                        <td style="padding:12px; color:#0ea5e9; font-weight:700;">280</td>
+                        <td style="padding:12px; color:#ef4444;">High</td>
+                        <td style="padding:12px; font-weight:700;">280</td>
+                        <td style="padding:12px;"><span class="status-badge badge-success">Fully Issued</span></td>
+                    </tr>
+                    <tr style="border-top:1px solid #eef2f6;">
+                        <td style="padding:12px;">Brgy. Nancamaliran</td>
+                        <td style="padding:12px; color:#0ea5e9; font-weight:700;">310</td>
+                        <td style="padding:12px; color:#ef4444;">High</td>
+                        <td style="padding:12px; font-weight:700;">310</td>
+                        <td style="padding:12px;"><span class="status-badge badge-blue">Partially Issued</span></td>
+                    </tr>
+                    <tr style="border-top:1px solid #eef2f6;">
+                        <td style="padding:12px;">Brgy. Catablan</td>
+                        <td style="padding:12px; color:#0ea5e9; font-weight:700;">215</td>
+                        <td style="padding:12px; color:#f59e0b;">Moderate</td>
+                        <td style="padding:12px; font-weight:700;">220</td>
+                        <td style="padding:12px;"><span class="status-badge badge-light">Approved</span></td>
+                    </tr>
+                    <tr style="border-top:1px solid #eef2f6;">
+                        <td style="padding:12px;">Brgy. Pinmaludpod</td>
+                        <td style="padding:12px; color:#0ea5e9; font-weight:700;">162</td>
+                        <td style="padding:12px; color:#f59e0b;">Moderate</td>
+                        <td style="padding:12px;">—</td>
+                        <td style="padding:12px;"><span class="status-badge badge-yellow">Pending</span></td>
+                    </tr>
+                    <tr style="border-top:1px solid #eef2f6;">
+                        <td style="padding:12px;">Brgy. Anonas</td>
+                        <td style="padding:12px; color:#0ea5e9; font-weight:700;">172</td>
+                        <td style="padding:12px; color:#16a34a;">Low</td>
+                        <td style="padding:12px;">—</td>
+                        <td style="padding:12px;"><span class="status-badge badge-yellow">Pending</span></td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div style="text-align:right; padding-top:12px; color:#0f172a; font-weight:700;">Total Projected Demand <span style="color:#0ea5e9;">1,139 food packs</span></div>
+        </div>
+    </div>
+
+    <!-- Tab: Warehouse Stock -->
+    <div id="tab-warehouse" class="drawer-tab-content" style="padding:24px; display:none;">
+        <div style="background:#fff; border:1px solid #e6eef8; border-radius:10px; padding:18px;">
+            <div style="font-size:14px; font-weight:700; margin-bottom:6px;">Urdaneta Subwarehouse</div>
+            <div style="font-size:12px; color:#64748b; margin-bottom:12px;">Urdaneta City</div>
+
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:14px;">
+                <div style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:8px; padding:12px;">
+                    <div style="font-size:12px; color:#64748b;">Current Stock</div>
+                    <div style="font-size:20px; font-weight:800;">4,100</div>
+                    <div style="font-size:12px; color:#64748b;">food packs</div>
+                </div>
+                <div style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:8px; padding:12px;">
+                    <div style="font-size:12px; color:#64748b;">Reserved</div>
+                    <div style="font-size:20px; font-weight:800;">1,100</div>
+                    <div style="font-size:12px; color:#64748b;">food packs</div>
+                </div>
+                <div style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:8px; padding:12px;">
+                    <div style="font-size:12px; color:#64748b;">Available</div>
+                    <div style="font-size:20px; font-weight:800; color:#16a34a;">3,000</div>
+                    <div style="font-size:12px; color:#64748b;">food packs</div>
+                </div>
+                <div style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:8px; padding:12px;">
+                    <div style="font-size:12px; color:#64748b;">Minimum Level</div>
+                    <div style="font-size:20px; font-weight:800;">500</div>
+                    <div style="font-size:12px; color:#64748b;">food packs</div>
+                </div>
+            </div>
+
+            <div style="margin-top:6px;">
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
+                    <div style="font-size:13px; font-weight:600;">Stock vs. Demand Coverage</div>
+                    <div style="font-size:12px; color:#64748b;">79%</div>
+                </div>
+                <div style="height:8px; background:#eef2f6; border-radius:6px;">
+                    <div style="height:100%; width:79%; background:#f59e0b; border-radius:6px;"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Tab: Allocations -->
+    <div id="tab-allocations" class="drawer-tab-content" style="padding:24px; display:none;">
+        <div style="background:#fff; border:1px solid #e6eef8; border-radius:10px; padding:18px;">
+            <div style="font-size:14px; font-weight:700; margin-bottom:8px;">Allocation Records</div>
+            <div style="font-size:12px; color:#64748b; margin-bottom:12px;">Active food-pack allocation records for Urdaneta City</div>
+
+            <table style="width:100%; border-collapse:collapse; margin-bottom:14px;">
+                <thead>
+                    <tr style="text-align:left; color:#64748b; font-size:12px;">
+                        <th style="padding:10px 12px;">REF. NO.</th>
+                        <th style="padding:10px 12px;">BARANGAY</th>
+                        <th style="padding:10px 12px;">PREDICTED</th>
+                        <th style="padding:10px 12px;">FINAL ALLOC.</th>
+                        <th style="padding:10px 12px;">ISSUED</th>
+                        <th style="padding:10px 12px;">STATUS</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr style="border-top:1px solid #eef2f6;">
+                        <td style="padding:12px; color:#0ea5e9; font-weight:700;">ALO-2026-001</td>
+                        <td style="padding:12px;">Brgy. San Vicente</td>
+                        <td style="padding:12px;">280</td>
+                        <td style="padding:12px; font-weight:700;">280</td>
+                        <td style="padding:12px;">280</td>
+                        <td style="padding:12px;"><span class="status-badge badge-success">Fully Issued</span></td>
+                    </tr>
+                    <tr style="border-top:1px solid #eef2f6;">
+                        <td style="padding:12px; color:#0ea5e9; font-weight:700;">ALO-2026-002</td>
+                        <td style="padding:12px;">Brgy. Nancamaliran</td>
+                        <td style="padding:12px;">310</td>
+                        <td style="padding:12px; font-weight:700;">310</td>
+                        <td style="padding:12px;">190</td>
+                        <td style="padding:12px;"><span class="status-badge badge-blue">Partially Issued</span></td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div style="margin-top:8px;">
+                <div style="font-size:13px; font-weight:600; margin-bottom:6px;">Issuance & Validation Progress</div>
+                <div style="margin-bottom:8px;">
+                    <div style="display:flex; justify-content:space-between; margin-bottom:6px;">
+                        <div style="font-size:12px; color:#64748b;">Issuance Progress</div>
+                        <div style="font-size:12px; font-weight:700;">73%</div>
+                    </div>
+                    <div style="height:8px; background:#eef2f6; border-radius:6px; margin-bottom:6px;"><div style="height:100%; width:73%; background:#f59e0b; border-radius:6px;"></div></div>
+                </div>
+                <div>
+                    <div style="display:flex; justify-content:space-between; margin-bottom:6px;">
+                        <div style="font-size:12px; color:#64748b;">Validation Progress</div>
+                        <div style="font-size:12px; font-weight:700;">52%</div>
+                    </div>
+                    <div style="height:8px; background:#eef2f6; border-radius:6px;"><div style="height:100%; width:52%; background:#f59e0b; border-radius:6px;"></div></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Drawer Footer -->
+    <div style="position:sticky; bottom:0; background:white; border-top:1px solid #e2e8f0; padding:16px 24px; display:flex; gap:10px; flex-wrap:wrap;">
+        <button style="display:flex; align-items:center; gap:6px; background:#2563eb; color:white; border:none; padding:10px 16px; border-radius:8px; font-size:13px; font-weight:600; cursor:pointer; font-family:Inter,sans-serif;">
+            ♻ Create Pre-positioning Plan
+        </button>
+        <button style="display:flex; align-items:center; gap:6px; background:white; color:#1e293b; border:1px solid #e2e8f0; padding:10px 16px; border-radius:8px; font-size:13px; font-weight:600; cursor:pointer; font-family:Inter,sans-serif;">
+            🏭 View Warehouse Stock
+        </button>
+        <button style="display:flex; align-items:center; gap:6px; background:white; color:#1e293b; border:1px solid #e2e8f0; padding:10px 16px; border-radius:8px; font-size:13px; font-weight:600; cursor:pointer; font-family:Inter,sans-serif;">
+            📋 View Allocations
+        </button>
+        <button onclick="closeDrawer()" style="background:none; border:none; color:#64748b; font-size:13px; font-weight:600; cursor:pointer; padding:10px; font-family:Inter,sans-serif;">
+            Close
+        </button>
+    </div>
+</div>
+
+<script>
+// LGU data
+const lguData = {
+    urdaneta: {
+        title: 'Urdaneta City',
+        badge: 'High Demand',
+        badgeClass: 'badge-warning',
+        demand: '5,200',
+        stock: '4,100',
+        surplusLabel: 'Shortage',
+        surplusVal: '-1,100',
+        surplusColor: '#dc2626',
+        surplusBg: '#fef2f2',
+        surplusBorder: '#fca5a5',
+        suff: '79%',
+        suffLabel: 'Low',
+        suffColor: '#b45309',
+        suffBg: '#fefce8',
+        barSuff: 79, barIssuance: 73, barValidation: 52,
+        barColor: '#f59e0b'
+    },
+    santabarbara: {
+        title: 'Santa Barbara',
+        badge: 'Sufficient Stock',
+        badgeClass: 'badge-success',
+        demand: '3,400',
+        stock: '3,900',
+        surplusLabel: 'Surplus',
+        surplusVal: '+500',
+        surplusColor: '#16a34a',
+        surplusBg: '#f0fdf4',
+        surplusBorder: '#86efac',
+        suff: '115%',
+        suffLabel: 'Adequate',
+        suffColor: '#166534',
+        suffBg: '#dcfce7',
+        barSuff: 100, barIssuance: 100, barValidation: 64,
+        barColor: '#22c55e'
+    },
+    calasiao: {
+        title: 'Calasiao',
+        badge: 'Critical Shortage',
+        badgeClass: 'badge-danger',
+        demand: '3,850',
+        stock: '1,800',
+        surplusLabel: 'Shortage',
+        surplusVal: '-2,050',
+        surplusColor: '#dc2626',
+        surplusBg: '#fef2f2',
+        surplusBorder: '#fca5a5',
+        suff: '47%',
+        suffLabel: 'Critical',
+        suffColor: '#b91c1c',
+        suffBg: '#fef2f2',
+        barSuff: 47, barIssuance: 31, barValidation: 28,
+        barColor: '#ef4444'
+    }
+};
+
+function openDrawer(lgu) {
+    const d = lguData[lgu];
+    document.getElementById('drawer-title').textContent = d.title;
+
+    const badge = document.getElementById('drawer-badge');
+    badge.textContent = d.badge;
+    badge.className = 'status-badge ' + d.badgeClass;
+
+    document.getElementById('drawer-demand').textContent = d.demand;
+    document.getElementById('drawer-stock').textContent = d.stock;
+    document.getElementById('drawer-surplus-label').textContent = d.surplusLabel;
+    document.getElementById('drawer-surplus-val').textContent = d.surplusVal;
+    document.getElementById('drawer-surplus-val').style.color = d.surplusColor;
+    document.getElementById('drawer-suff').textContent = d.suff;
+    document.getElementById('drawer-suff').style.color = d.suffColor;
+    document.getElementById('drawer-suff-label').textContent = d.suffLabel;
+
+    document.getElementById('bar-suff').style.width = d.barSuff + '%';
+    document.getElementById('bar-suff').style.background = d.barColor;
+    document.getElementById('pct-suff').textContent = d.barSuff + '%';
+
+    document.getElementById('bar-issuance').style.width = d.barIssuance + '%';
+    document.getElementById('bar-issuance').style.background = d.barColor;
+    document.getElementById('pct-issuance').textContent = d.barIssuance + '%';
+
+    document.getElementById('bar-validation').style.width = d.barValidation + '%';
+    document.getElementById('bar-validation').style.background = d.barColor;
+    document.getElementById('pct-validation').textContent = d.barValidation + '%';
+
+    const drawer = document.getElementById('drawer');
+    const overlay = document.getElementById('drawer-overlay');
+
+    // Prevent layout shift by preserving scrollbar width
+    const scrollBarWidth = window.innerWidth - document.documentElement.clientWidth;
+    if (scrollBarWidth > 0) document.body.style.paddingRight = scrollBarWidth + 'px';
+    document.body.style.overflow = 'hidden';
+
+    // Show elements then trigger CSS transitions (make visible before computing underline)
+    drawer.style.display = 'block';
+    overlay.style.display = 'block';
+    // force reflow
+    void drawer.offsetWidth;
+    drawer.classList.add('open');
+    overlay.classList.add('open');
+
+    // position underline after drawer becomes visible
+    setTimeout(() => {
+        const activeTab = document.querySelector('.drawer-tab.active');
+        if (activeTab) updateTabUnderline(activeTab);
+    }, 30);
+}
+
+function closeDrawer() {
+    const drawer = document.getElementById('drawer');
+    const overlay = document.getElementById('drawer-overlay');
+    drawer.classList.remove('open');
+    overlay.classList.remove('open');
+    // wait for transition to finish before hiding and restoring scroll
+    setTimeout(() => {
+        drawer.style.display = 'none';
+        overlay.style.display = 'none';
+        document.body.style.overflow = '';
+        document.body.style.paddingRight = '';
+    }, 280);
+}
+
+function switchTab(tab, btn) {
+    document.querySelectorAll('.drawer-tab').forEach(t => t.classList.remove('active'));
+
+    const duration = 220; // match CSS timings
+    document.querySelectorAll('.drawer-tab-content').forEach(c => {
+        if (c.id === 'tab-' + tab) {
+            // show target
+            c.style.display = 'block';
+            // force reflow then add visible for transition
+            void c.offsetWidth;
+            c.classList.add('visible');
+        } else if (c.classList.contains('visible')) {
+            // hide with transition
+            c.classList.remove('visible');
+            setTimeout(() => { c.style.display = 'none'; }, duration);
+        } else {
+            c.style.display = 'none';
+        }
+    });
+
+    const el = btn || document.querySelector('.drawer-tab');
+    if (el) el.classList.add('active');
+    // move underline to selected tab
+    updateTabUnderline(el);
+}
+
+// initialize underline to active tab when script loads
+document.addEventListener('DOMContentLoaded', () => {
+    const active = document.querySelector('.drawer-tab.active');
+    if (active) updateTabUnderline(active);
+});
+// if script executed after DOM loaded, ensure underline is positioned
+if (document.readyState !== 'loading') {
+    const activeNow = document.querySelector('.drawer-tab.active');
+    if (activeNow) updateTabUnderline(activeNow);
+}
+
+function updateTabUnderline(btn) {
+    const underline = document.getElementById('tab-underline');
+    const tabs = document.getElementById('drawer-tabs');
+    if (!underline || !tabs || !btn) return;
+    const left = btn.offsetLeft;
+    const width = btn.offsetWidth;
+    underline.style.transform = `translateX(${left}px)`;
+    underline.style.width = width + 'px';
+}
+</script>
+
+<style>
+/* Drawer initial and open state classes (controlled by JS) */
+/* smoother easing and slightly longer duration for perceived smoothness */
+#drawer { transform: translateX(100%); transition: transform 360ms cubic-bezier(.2,.9,.2,1); }
+#drawer.open { transform: translateX(0); }
+#drawer-overlay { opacity: 0; transition: opacity 360ms cubic-bezier(.2,.9,.2,1); pointer-events: none; }
+#drawer-overlay.open { opacity: 1; pointer-events: auto; }
+
+/* Tab content enter/leave */
+.drawer-tab-content { display:none; opacity:0; transform:translateY(6px); transition:opacity 240ms cubic-bezier(.2,.8,.2,1), transform 240ms cubic-bezier(.2,.8,.2,1); }
+.drawer-tab-content.visible { opacity:1; transform:translateY(0); }
+
+/* Tab underline indicator */
+/* place underline just below the tab row (inside tab container) */
+#tab-underline { position:absolute; bottom:6px; left:0; height:3px; background:#2563eb; border-radius:3px; width:0; transform:translateX(0); transition:transform 360ms cubic-bezier(.2,.9,.2,1), width 360ms cubic-bezier(.2,.9,.2,1); }
+
+/* Prevent duplicate underline: override the button's active bottom border */
+.drawer-tab.active { border-bottom-color: transparent !important; }
+</style>
+
+</body>
+</html>
