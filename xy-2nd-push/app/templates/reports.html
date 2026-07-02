@@ -1,0 +1,151 @@
+{% extends "base_app.html" %}
+
+{% block title %}Reports – ReliefLine{% endblock %}
+{% block page_title %}Reports{% endblock %}
+{% block body_class %}reports-page{% endblock %}
+
+{% block content %}
+<div class="content reports-content">
+
+    <section class="report-layout">
+
+        <aside class="report-type-card">
+            <h2>Select Report Type</h2>
+
+            <div class="report-type-list">
+                <button class="report-type active" data-report="Predicted Food-Pack Demand Report">
+                    Predicted Food-Pack Demand Report
+                </button>
+
+                <button class="report-type" data-report="Final Allocation Report">
+                    Final Allocation Report
+                </button>
+
+                <button class="report-type" data-report="Prediction vs. Final Allocation Report">
+                    Prediction vs. Final Allocation Report
+                </button>
+
+                <button class="report-type" data-report="Warehouse Inventory Report">
+                    Warehouse Inventory Report
+                </button>
+
+                <button class="report-type" data-report="Stock Movement Report">
+                    Stock Movement Report
+                </button>
+
+                <button class="report-type" data-report="Pre-positioning Report">
+                    Pre-positioning Report
+                </button>
+
+                <button class="report-type" data-report="Issuance Report">
+                    Issuance Report
+                </button>
+
+                <button class="report-type" data-report="Validation Completion Report">
+                    Validation Completion Report
+                </button>
+
+                <button class="report-type" data-report="Incoming Donations Report">
+                    Incoming Donations Report
+                </button>
+
+                <button class="report-type" data-report="Low-Stock Report">
+                    Low-Stock Report
+                </button>
+
+                <button class="report-type" data-report="User Activity Report">
+                    User Activity Report
+                </button>
+
+                <button class="report-type" data-report="Audit Trail Report">
+                    Audit Trail Report
+                </button>
+            </div>
+        </aside>
+
+        <section class="report-filter-card">
+            <h2>Report Filters</h2>
+
+            <form id="report-form" class="report-filter-grid">
+                <div class="filter-group">
+                    <label>Start Date</label>
+                    <input type="date">
+                </div>
+
+                <div class="filter-group">
+                    <label>End Date</label>
+                    <input type="date">
+                </div>
+
+                <div class="filter-group">
+                    <label>Disaster Event</label>
+                    <select>
+                        <option>All</option>
+                        <option>Typhoon Egay</option>
+                        <option>Flood Preparedness</option>
+                    </select>
+                </div>
+
+                <div class="filter-group">
+                    <label>Location</label>
+                    <select>
+                        <option>All</option>
+                        <option>Urdaneta City</option>
+                        <option>Calasiao</option>
+                        <option>Santa Barbara</option>
+                    </select>
+                </div>
+
+                <div class="filter-group">
+                    <label>Status</label>
+                    <select>
+                        <option>All</option>
+                        <option>Completed</option>
+                        <option>Pending</option>
+                        <option>Approved</option>
+                    </select>
+                </div>
+
+                <div class="filter-group">
+                    <label>Export Format</label>
+                    <select>
+                        <option>PDF</option>
+                        <option>CSV</option>
+                        <option>Excel</option>
+                    </select>
+                </div>
+
+                <div class="report-actions">
+                    <button type="submit" class="button-primary">
+                        <i data-lucide="bar-chart-3"></i>
+                        Generate Report
+                    </button>
+                </div>
+            </form>
+        </section>
+
+    </section>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+let selectedReport = "Predicted Food-Pack Demand Report";
+
+document.querySelectorAll(".report-type").forEach(button => {
+    button.addEventListener("click", function () {
+        document.querySelectorAll(".report-type").forEach(item => {
+            item.classList.remove("active");
+        });
+
+        this.classList.add("active");
+        selectedReport = this.dataset.report;
+    });
+});
+
+document.getElementById("report-form").addEventListener("submit", function (event) {
+    event.preventDefault();
+    alert("Generating: " + selectedReport);
+});
+</script>
+{% endblock %}

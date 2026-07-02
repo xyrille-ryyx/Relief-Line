@@ -1,0 +1,200 @@
+{% extends "base_app.html" %}
+
+{% block title %}Donations & Incoming Supplies – ReliefLine{% endblock %}
+{% block page_title %}Donations & Incoming Supplies{% endblock %}
+{% block body_class %}tracking-page donations-page{% endblock %}
+
+{% block content %}
+<div class="content tracking-page-content">
+
+    <section class="tracking-kpis">
+        <article class="tracking-kpi">
+            <span class="tracking-kpi-icon blue">
+                <i data-lucide="inbox"></i>
+            </span>
+            <div>
+                <span>Total Donations</span>
+                <strong>4</strong>
+                <small>this period</small>
+            </div>
+        </article>
+
+        <article class="tracking-kpi">
+            <span class="tracking-kpi-icon green">
+                <i data-lucide="circle-check"></i>
+            </span>
+            <div>
+                <span>Received</span>
+                <strong>2</strong>
+                <small>donations</small>
+            </div>
+        </article>
+
+        <article class="tracking-kpi">
+            <span class="tracking-kpi-icon purple">
+                <i data-lucide="truck"></i>
+            </span>
+            <div>
+                <span>In Transit</span>
+                <strong>1</strong>
+                <small>donations</small>
+            </div>
+        </article>
+
+        <article class="tracking-kpi">
+            <span class="tracking-kpi-icon orange">
+                <i data-lucide="clock-3"></i>
+            </span>
+            <div>
+                <span>Pending</span>
+                <strong>1</strong>
+                <small>awaiting action</small>
+            </div>
+        </article>
+    </section>
+
+    <section class="tracking-records-card">
+        <div class="tracking-records-header">
+            <div>
+                <h2>Donations &amp; Incoming Supplies</h2>
+            </div>
+
+            <div class="record-toolbar">
+                <label class="table-search">
+                    <i data-lucide="search"></i>
+                    <input id="donation-search" type="search" placeholder="Search...">
+                </label>
+
+                <button class="button-primary compact">
+                    <i data-lucide="plus"></i>
+                    Record Donation
+                </button>
+
+                <button class="button-secondary compact" onclick="exportCsv('donation-table', 'donation-records.csv')">
+                    <i data-lucide="download"></i>
+                    Export
+                </button>
+            </div>
+        </div>
+
+        <div class="table-scroll">
+            <table id="donation-table" class="supply-table tracking-table">
+                <thead>
+                    <tr>
+                        <th>Ref. No.</th>
+                        <th>Type</th>
+                        <th>Category</th>
+                        <th>Source</th>
+                        <th>Qty</th>
+                        <th>Warehouse Dest.</th>
+                        <th>Date</th>
+                        <th>Status</th>
+                        <th>Remarks</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    <tr>
+                        <td class="table-link">DON-2026-001</td>
+                        <td>Food Pack</td>
+                        <td>Food Packs</td>
+                        <td>DSWD Region I</td>
+                        <td>2,000</td>
+                        <td>Provincial Warehouse</td>
+                        <td>Jun 10, 2026</td>
+                        <td><span class="table-status received">Received</span></td>
+                        <td>For Typhoon Preparedness 2026</td>
+                        <td>—</td>
+                    </tr>
+
+                    <tr>
+                        <td class="table-link">DON-2026-002</td>
+                        <td>Hygiene Kit</td>
+                        <td>Hygiene Kits</td>
+                        <td>Red Cross Pangasinan</td>
+                        <td>800</td>
+                        <td>Urdaneta Subwarehouse</td>
+                        <td>Jun 12, 2026</td>
+                        <td><span class="table-status received">Received</span></td>
+                        <td>Batch 1 of 2</td>
+                        <td>—</td>
+                    </tr>
+
+                    <tr>
+                        <td class="table-link">DON-2026-003</td>
+                        <td>Food Pack</td>
+                        <td>Food Packs</td>
+                        <td>LGU Dagupan City</td>
+                        <td>500</td>
+                        <td>Calasiao Sub-depot</td>
+                        <td>Jun 18, 2026</td>
+                        <td><span class="table-status approved">In Transit</span></td>
+                        <td>Coordination with CSWDO</td>
+                        <td>
+                            <button class="action-primary" onclick="confirmDonation(this)">
+                                <i data-lucide="circle-check"></i>
+                                Confirm Received
+                            </button>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td class="table-link">DON-2026-004</td>
+                        <td>Kitchen Kit</td>
+                        <td>Kitchen Kits</td>
+                        <td>Private Donor (Anon)</td>
+                        <td>300</td>
+                        <td>Provincial Warehouse</td>
+                        <td>Jun 20, 2026</td>
+                        <td><span class="table-status pending">Pending</span></td>
+                        <td>Awaiting donor confirmation</td>
+                        <td>
+                            <button class="action-primary" onclick="confirmDonation(this)">
+                                <i data-lucide="circle-check"></i>
+                                Confirm Received
+                            </button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+function confirmDonation(button) {
+    if (!confirm("Confirm that this donation has been received?")) return;
+
+    const row = button.closest("tr");
+    row.querySelector(".table-status").textContent = "Received";
+    row.querySelector(".table-status").className = "table-status received";
+    button.remove();
+
+    alert("Donation marked as received.");
+}
+
+function exportCsv(tableId, filename) {
+    const rows = [...document.querySelectorAll("#" + tableId + " tr")];
+    const csv = rows.map(row =>
+        [...row.cells].map(cell => '"' + cell.innerText.replace(/"/g, '""') + '"').join(",")
+    ).join("\n");
+
+    const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
+    const link = document.createElement("a");
+    link.href = URL.createObjectURL(blob);
+    link.download = filename;
+    link.click();
+}
+
+document.getElementById("donation-search").addEventListener("input", function () {
+    const keyword = this.value.toLowerCase();
+
+    document.querySelectorAll("#donation-table tbody tr").forEach(row => {
+        row.style.display = row.innerText.toLowerCase().includes(keyword) ? "" : "none";
+    });
+});
+</script>
+{% endblock %}

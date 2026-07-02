@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Allocation Monitoring – ReliefLine</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"><script src="https://unpkg.com/lucide@latest"></script>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/reliefline.css') }}">
+</head>
+<body class="page-dashboard app-page allocation-page">
+{% include "partials/sidebar.html" %}
+
+<main class="main"><header class="topbar">
+    <div class="topbar-left">
+        <h1>Allocation Monitoring</h1>
+        <p>Province of Pangasinan · Typhoon Preparedness — June 2026</p>
+    </div>
+    <div class="topbar-right">
+        <label class="search-box" aria-label="Quick search"><i data-lucide="search"></i><input type="search" placeholder="Quick search..."></label>
+        <button class="notif-btn" type="button" aria-label="Notifications"><i data-lucide="bell"></i><span class="notif-badge">2</span></button>
+        <div class="user-chip"><div class="user-avatar">{{ session.name[0] if session.name else 'M' }}</div><div class="user-info"><strong>{{ session.name if session.name else 'Maria Santos' }}</strong><span>PSWDO</span></div></div>
+    </div>
+</header>
+<div class="content allocation-content">
+    <section class="allocation-kpis" aria-label="Allocation summary">
+        <article class="kpi-card"><span class="kpi-icon blue"><i data-lucide="clipboard-list"></i></span><div><span class="kpi-label">Total Allocations</span><strong>5</strong><small>this period</small></div></article>
+        <article class="kpi-card"><span class="kpi-icon green"><i data-lucide="circle-check"></i></span><div><span class="kpi-label">Fully Issued</span><strong>2</strong><small>allocations</small></div></article>
+        <article class="kpi-card"><span class="kpi-icon blue"><i data-lucide="package-check"></i></span><div><span class="kpi-label">Partially Issued</span><strong>1</strong><small>allocations</small></div></article>
+        <article class="kpi-card"><span class="kpi-icon orange"><i data-lucide="clock-3"></i></span><div><span class="kpi-label">Pending/Approved</span><strong>2</strong><small>allocations</small></div></article>
+    </section>
+    <section class="allocation-records-card">
+        <div class="allocation-records-header"><h2>Allocation Records</h2><div class="record-toolbar"><label class="table-search"><i data-lucide="search"></i><input id="allocation-search" type="search" placeholder="Search..."></label><button class="button-secondary compact" type="button" onclick="downloadTableCsv('allocation-table','allocation-records.csv')"><i data-lucide="download"></i>Export</button></div></div>
+        <div class="table-scroll"><table id="allocation-table" class="supply-table allocation-table"><thead><tr><th>Ref. No.</th><th>City/Mun.</th><th>Barangay</th><th>Predicted</th><th>Final Alloc.</th><th>Issued</th><th>Remaining</th><th>Status</th><th>Date</th><th>Actions</th></tr></thead><tbody>
+            <tr><td class="table-link">ALO-2026-001</td><td>Urdaneta City</td><td>Brgy. San Vicente</td><td>280</td><td>280</td><td>280</td><td class="remaining-zero">0</td><td><span class="table-status received">Fully Issued</span></td><td>Jun 15, 2026</td><td class="allocation-actions">
+    <button type="button" class="action-view"
+            onclick="openAllocationDetails('ALO-2026-001')">
+        <i data-lucide="eye"></i><span>View</span>
+    </button>
+</td></tr>
+            <tr><td class="table-link">ALO-2026-002</td><td>Urdaneta City</td><td>Brgy. Nancamaliran</td><td>310</td><td>310</td><td>190</td><td class="remaining-warn">120</td><td><span class="table-status partially-issued">Partially Issued</span></td><td>Jun 15, 2026</td><td class="allocation-actions">
+    <button type="button" class="action-view"
+            onclick="openAllocationDetails('ALO-2026-002')">
+        <i data-lucide="eye"></i><span>View</span>
+    </button>
+</td></tr>
+            <tr><td class="table-link">ALO-2026-003</td><td>Calasiao</td><td>Brgy. Buenlag</td><td>420</td><td>350</td><td>0</td><td class="remaining-warn">350</td><td><span class="table-status approved">Approved</span></td><td>Jun 16, 2026</td><td class="allocation-actions">
+    <button type="button" class="action-view"
+            onclick="openAllocationDetails('ALO-2026-003')">
+        <i data-lucide="eye"></i><span>View</span>
+    </button>
+</td></tr>
+            <tr><td class="table-link">ALO-2026-004</td><td>Calasiao</td><td>Brgy. Dinalaoan</td><td>390</td><td>390</td><td>0</td><td class="remaining-warn">390</td><td><span class="table-status pending">Pending</span></td><td>Jun 16, 2026</td><td class="allocation-actions">
+    <button type="button" class="action-view"
+            onclick="openAllocationDetails('ALO-2026-004')">
+        <i data-lucide="eye"></i><span>View</span>
+    </button>
+
+    <button type="button" class="action-approve"
+            onclick="approveAllocation('ALO-2026-004')">
+        <i data-lucide="check-circle-2"></i><span>Approve</span>
+    </button>
+</td></tr>
+            <tr><td class="table-link">ALO-2026-005</td><td>Santa Barbara</td><td>Brgy. Magtaking</td><td>190</td><td>200</td><td>200</td><td class="remaining-zero">0</td><td><span class="table-status received">Fully Issued</span></td><td>Jun 14, 2026</td><td class="allocation-actions">
+    <button type="button" class="action-view"
+            onclick="openAllocationDetails('ALO-2026-005')">
+        <i data-lucide="eye"></i><span>View</span>
+    </button>
+</td></tr>
+        </tbody></table></div>
+    </section>
+</div></main>
+<script>
+function openAllocationDetails(referenceNumber) {
+    alert("Opening allocation details for " + referenceNumber);
+}
+
+function approveAllocation(referenceNumber) {
+    const confirmed = confirm(
+        "Approve allocation " + referenceNumber + "?"
+    );
+
+    if (!confirmed) return;
+
+    alert(referenceNumber + " has been approved.");
+}
+
+document.addEventListener("DOMContentLoaded", function () {
+    if (window.lucide) {
+        window.lucide.createIcons();
+    }
+});
+window.addEventListener("load", function () {
+    if (window.lucide) {
+        window.lucide.createIcons();
+    }
+});
+</script>
+</body>
+</html>
