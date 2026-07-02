@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>{% block title %}ReliefLine{% endblock %}</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/reliefline.css') }}">
+</head>
+
+<body class="page-dashboard app-page {% block body_class %}{% endblock %}">
+
+    {% include "partials/sidebar.html" %}
+
+    <main class="main">
+        <header class="topbar">
+            <div class="topbar-left">
+                <h1>{% block page_title %}{% endblock %}</h1>
+                <p>Province of Pangasinan · Typhoon Preparedness — June 2026</p>
+            </div>
+
+            <div class="topbar-right">
+                <label class="search-box">
+                    <i data-lucide="search"></i>
+                    <input type="search" placeholder="Quick search...">
+                </label>
+
+                <button class="notif-btn" type="button">
+                    <i data-lucide="bell"></i>
+                    <span class="notif-badge">2</span>
+                </button>
+
+                <div class="user-chip">
+                    <div class="user-avatar">
+                        {{ session.name[0] if session.name else 'M' }}
+                    </div>
+
+                    <div class="user-info">
+                        <strong>{{ session.name if session.name else 'Maria Santos' }}</strong>
+                        <span>PSWDO</span>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        {% block content %}{% endblock %}
+    </main>
+
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            lucide.createIcons();
+        });
+    </script>
+
+    {% block scripts %}{% endblock %}
+</body>
+</html>
