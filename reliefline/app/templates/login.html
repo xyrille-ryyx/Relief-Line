@@ -1,103 +1,113 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sign In – ReliefLine</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="{{ url_for('static', filename='css/reliefline.css') }}">
-</head>
-<body class="page-login">
+{% extends "base.html" %}
 
-    <!-- Left panel -->
-    <div class="login-left">
-        <div class="logo">
-            <div class="logo-icon">🗂️</div>
-            <strong>ReliefLine</strong>
-        </div>
+{% block title %}Log In - ReliefLine{% endblock %}
 
-        <div class="left-body">
-            <h2>Relief Supplies Pipeline System</h2>
-            <p class="desc">
-                Manage food-pack allocation, warehouse inventory,
-                pre-positioning, and validation for the Province of Pangasinan.
-            </p>
-            <ul class="checklist">
-                <li>Typhoon Preparedness — June 2026</li>
-                <li>Target LGUs: Urdaneta City, Santa Barbara, Calasiao</li>
-                <li>PSWDO · CSWDO/MSWDO · Barangay Personnel</li>
-            </ul>
-        </div>
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/login.css') }}">
+{% endblock %}
 
-        <div class="left-footer">© 2026 PSWDO Pangasinan.</div>
-    </div>
+{% block content %}
+<div class="login-page">
 
-    <!-- Right panel -->
-    <div class="login-right">
-        <div class="form-box">
-            <h3>Welcome back</h3>
-            <p class="subtitle">Sign in to your authorized account to continue.</p>
+    <div class="hero">
+    <div class="hero-overlay"></div>
 
-            <!-- Demo credentials box -->
-            <div class="demo-box">
-                <strong>Demo (password: password123):</strong>
-                pswdo@reliefline.gov.ph · cswdo@urdaneta.gov.ph ·
-                admin@pswdo.gov.ph · brgy@sanvicente.gov.ph
+    <div class="hero-inner">
+
+    <!-- Top bar -->
+    <header class="top-bar">
+            <div class="office-id">
+                <img src="{{ url_for('static', filename='img/province-seal.png') }}" alt="Province of Pangasinan Seal" class="seal">
+                <div class="office-text">
+                    <span class="republic">Republic of the Philippines</span>
+                    <h2>Province of Pangasinan</h2>
+                    <span class="office-name">Provincial Social Welfare and Development Office</span>
+                </div>
             </div>
+            <nav class="top-links">
+                <a href="#">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+                    Help
+                </a>
+                <span class="divider">|</span>
+                <a href="#">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+                    Contact
+                </a>
+            </nav>
+        </header>
 
-            <!-- Flash messages from Flask -->
-            {% with messages = get_flashed_messages() %}
+        <!-- Left brand content -->
+        <div class="brand-content">
+            <img src="{{ url_for('static', filename='img/reliefline-logo.png') }}" alt="ReliefLine" class="brand-logo">
+            <h1>ReliefLine</h1>
+            <div class="brand-rule"></div>
+            <p class="brand-tagline">Data-Driven Relief Supplies<br>Pipeline System</p>
+            <div class="brand-location">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                Province of Pangasinan
+            </div>
+        </div>
+
+        <!-- Login card -->
+        <div class="login-card">
+            <div class="lock-badge">
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#0f2547" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+            </div>
+            <h2>Welcome Back!</h2>
+            <p class="subtext">Sign in to continue to ReliefLine.</p>
+
+            {% with messages = get_flashed_messages(with_categories=true) %}
                 {% if messages %}
-                    {% for message in messages %}
-                        <div class="flash">{{ message }}</div>
+                    {% for category, message in messages %}
+                        <div class="flash-message {{ category }}">{{ message }}</div>
                     {% endfor %}
                 {% endif %}
             {% endwith %}
 
-            <form method="POST" action="/login">
-
-                <label for="email">Email Address</label>
-                <div class="input-wrap">
-                    <span class="icon">✉️</span>
-                    <input
-                        type="email"
-                        id="email"
-                        name="email"
-                        placeholder="email@office.gov.ph"
-                        required
-                        autocomplete="email"
-                    >
+            <form method="POST" action="{{ url_for('auth.login') }}">
+                <label for="email">Username/Email</label>
+                <div class="input-wrapper">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#8a94a6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                    <input type="text" id="email" name="email" placeholder="Enter your username or email" required>
                 </div>
 
                 <label for="password">Password</label>
-                <div class="input-wrap">
-                    <span class="icon">🔒</span>
-                    <input
-                        type="password"
-                        id="password"
-                        name="password"
-                        placeholder="••••••••"
-                        required
-                    >
-                    <button type="button" class="toggle-pw" onclick="togglePassword()">👁️</button>
+                <div class="input-wrapper">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#8a94a6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                    <input type="password" id="password" name="password" placeholder="Enter your password" required>
                 </div>
 
-                <a href="#" class="forgot">Forgot Password?</a>
+                <div class="form-row">
+                    <label class="remember-me">
+                        <input type="checkbox" name="remember">
+                        Remember me
+                    </label>
+                    <a href="#" class="forgot-link">Forgot Password?</a>
+                </div>
 
-                <button type="submit" class="btn-signin">Sign In</button>
-
-                <p class="secure-note">🔒 Authorized government system. Unauthorized access is prohibited.</p>
+                <button type="submit" class="login-btn">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                    LOG IN
+                </button>
             </form>
+
+            <div class="secured-divider"><span>Secured System</span></div>
+            <div class="secured-note">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#8a94a6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                <span>Authorized government system. Unauthorized access is prohibited.</span>
+            </div>
         </div>
     </div>
 
-    <script>
-        function togglePassword() {
-            const pw = document.getElementById('password');
-            pw.type = pw.type === 'password' ? 'text' : 'password';
-        }
-    </script>
+    <footer class="page-footer">
+        <span>© 2026 Province of Pangasinan. All rights reserved.</span>
+        <nav>
+            <a href="#">Privacy Notice</a>
+            <a href="#">Terms of Use</a>
+            <a href="#">Contact Support</a>
+        </nav>
+    </footer>
 
-</body>
-</html>
+</div>
+{% endblock %}

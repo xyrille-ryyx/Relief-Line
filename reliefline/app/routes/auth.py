@@ -1,38 +1,35 @@
-from flask import Blueprint, render_template, request, redirect, url_for, flash, session
-from werkzeug.security import check_password_hash
-from app import mysql
+from flask import Blueprint, render_template, redirect, url_for, request, flash
+from flask_login import login_user, logout_user, login_required
+from app.models.user import User
 
 auth_bp = Blueprint("auth", __name__)
 
 @auth_bp.route("/")
 def landing():
-    return render_template("landing.html")
+    return redirect(url_for("auth.login"))
 
 @auth_bp.route("/login", methods=["GET", "POST"])
 def login():
     if request.method == "POST":
-        email    = request.form.get("email")
+        email = request.form.get("email")
         password = request.form.get("password")
+        user = User.query.filter_by(email=email).first()
 
-        cur = mysql.connection.cursor()
-        cur.execute("SELECT user_id, name, email, password, role, office_id FROM users WHERE email = %s", (email,))
-        user = cur.fetchone()
-        cur.close()
-
-        if user and check_password_hash(user[3], password):
-            session["user_id"]   = user[0]
-            session["name"]      = user[1]
-            session["email"]     = user[2]
-            session["role"]      = user[4]
-            session["office_id"] = user[5]
-            return redirect(url_for("dashboard.dashboard"))
-        else:
-            flash("Invalid email or password.")
+        if user and user.check_password(password):
+            login_user(user)
+            if user.role == "pswdo_admin":
+                return redirect(url_for("pswdo.dashboard"))
+            elif user.role == "cswdo_admin":
+                return redirect(url_for("cswdo.dashboard"))
+            elif user.role == "barangay_user":
+                return redirect(url_for("barangay.dashboard"))
             return redirect(url_for("auth.login"))
+        flash("Invalid username/email or password.", "error")
 
     return render_template("login.html")
 
 @auth_bp.route("/logout")
+@login_required
 def logout():
-    session.clear()
-    return redirect(url_for("auth.landing"))
+    logout_user()
+    return redirect(url_for("auth.login"))

@@ -1,28 +1,36 @@
 from flask import Flask
-from flask_mysqldb import MySQL
-
-mysql = MySQL()
+from app.config import Config
+from app.extensions import db, login_manager
 
 def create_app():
     app = Flask(__name__)
-    app.config.from_object("config.Config")
+    app.config.from_object(Config)
 
-    mysql.init_app(app)
+    db.init_app(app)
+    login_manager.init_app(app)
+
+    from app.models.user import User
+    from app.models.office import Office
+    from app.models.barangay import Barangay
+    from app.models.warehouse import WarehouseInventory
+    from app.models.allocation import AllocationRecord, PrepositionRecord
+    from app.models.validation import DistributionRecord
+    from app.models.prediction import PredictionLog, ModelMetrics
+
+    @login_manager.user_loader
+    def load_user(user_id):
+        return User.query.get(int(user_id))
 
     from app.routes.auth import auth_bp
-    from app.routes.dashboard import dashboard_bp
+    from app.routes.pswdo import pswdo_bp
+    from app.routes.cswdo import cswdo_bp
+    from app.routes.barangay import barangay_bp
     from app.routes.prediction import prediction_bp
-    from app.routes.allocation import allocation_bp
-    from app.routes.warehouse import warehouse_bp
-    from app.routes.preposition import preposition_bp
-    from app.routes.distribution import distribution_bp
 
     app.register_blueprint(auth_bp)
-    app.register_blueprint(dashboard_bp)
-    app.register_blueprint(prediction_bp)
-    app.register_blueprint(allocation_bp)
-    app.register_blueprint(warehouse_bp)
-    app.register_blueprint(preposition_bp)
-    app.register_blueprint(distribution_bp)
+    app.register_blueprint(pswdo_bp, url_prefix="/pswdo")
+    app.register_blueprint(cswdo_bp, url_prefix="/cswdo")
+    app.register_blueprint(barangay_bp, url_prefix="/barangay")
+    app.register_blueprint(prediction_bp, url_prefix="/prediction")
 
     return app
